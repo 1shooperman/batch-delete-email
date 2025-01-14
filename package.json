@@ -1,0 +1,31 @@
+{
+  "name": "batch-delete-email",
+  "version": "1.0.0",
+  "description": "bulk delete gmail via api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "login": "clasp login",
+    "clone": "clasp clone",
+    "pull": "clasp pull"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1shooperman/batch-delete-email.git"
+  },
+  "author": "1shooperman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1shooperman/batch-delete-email/issues"
+  },
+  "homepage": "https://github.com/1shooperman/batch-delete-email#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@google/clasp": "^2.5.0",
+    "eslint": "^9.18.0",
+    "eslint-plugin-googleappsscript": "^1.0.5",
+    "globals": "^15.14.0"
+  }
+}
