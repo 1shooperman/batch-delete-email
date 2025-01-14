@@ -20,9 +20,8 @@ global.PropertiesService = {
   })
 };
 
-// Load and expose GAS functions globally
 const { getSearchCriteria } = require('../src/config.js');
-const { batchDeleteEmail } = require('../src/Code.js');
-
 global.getSearchCriteria = getSearchCriteria;
+
+const { batchDeleteEmail } = require('../src/Code.js');
 global.batchDeleteEmail = batchDeleteEmail; 

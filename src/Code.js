@@ -1,7 +1,3 @@
-if (typeof getSearchCriteria === "undefined" && typeof require !== "undefined") {
-  var { getSearchCriteria } = require("./config.js");
-}
-
 const batchDeleteEmail = () => {
   const criteria = getSearchCriteria();
   let totalThreads = 0;
