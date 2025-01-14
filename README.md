@@ -35,15 +35,13 @@ Delete gmail email in bulk, via the api, given a series of search strings.
 - [@d1verjim](https://github.com/d1verjim)
 - [@1shooperman](https://github.com/1shooperman)
 
-# Additional contributors
-- [Cursor.ai](https://www.cursor.com/)
-
 # Reference(s)
 - https://developers.google.com/apps-script/reference/gmail/gmail-message
 - https://support.google.com/mail/answer/7190?hl=en
 
 # Additional Notes
-You can manually test your email search criteria from the Gmail Web UI search box!
+- You can manually test your email search criteria from the Gmail Web UI search box!
+- Some of this was written / refactored using [Cursor.ai](https://www.cursor.com/)
 
 ## Example Search Strings
 - `older_than:30d`
