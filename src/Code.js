@@ -1,4 +1,4 @@
-if (typeof require !== "undefined") {
+if (typeof getSearchCriteria === "undefined" && typeof require !== "undefined") {
   var { getSearchCriteria } = require("./config.js");
 }
 
