@@ -4,7 +4,7 @@
   "description": "bulk delete gmail via api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest tests/**",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "login": "clasp login",
@@ -26,6 +26,10 @@
     "@google/clasp": "^2.5.0",
     "eslint": "^9.18.0",
     "eslint-plugin-googleappsscript": "^1.0.5",
-    "globals": "^15.14.0"
+    "globals": "^15.14.0",
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "setupFiles": ["<rootDir>/tests/setup.js"]
   }
 }

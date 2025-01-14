@@ -1,3 +1,5 @@
 node_modules
 .env.development
 .clasp.json
+# Ignore local configuration
+src/config.local.js
