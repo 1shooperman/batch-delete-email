@@ -1,5 +1,5 @@
-if (typeof require !== 'undefined') {
-  var { getSearchCriteria } = require('./config.js');
+if (typeof require !== "undefined") {
+  var { getSearchCriteria } = require("./config.js");
 }
 
 const batchDeleteEmail = () => {
@@ -50,7 +50,7 @@ const deleteThreads = (threads) => {
 };
 
 // Export for testing while maintaining GAS global scope
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = { batchDeleteEmail, deleteThreads };
 } else {
   // In GAS environment, make function global
