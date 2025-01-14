@@ -26,7 +26,9 @@ const batchDeleteEmail = () => {
     
     if (threads.length > 500) {
       threadBatch++;
-      threads[threadBatch] = []; // initialize the next batch, otherwise the blind 'concat' (above) won't work.
+
+      // Initialize the next batch, otherwise the blind 'concat' (above) won't work.
+      threads[threadBatch] = [];
     }
   }
 
