@@ -28,6 +28,13 @@ Delete gmail email in bulk, via the api, given a series of search strings.
 1. Clone locally
 1. (optional) `npm i && npm test`
 1. `npm run login`
+1. Create a `.clasp.json` file in your project root with your script ID:
+   ```json
+   {
+     "scriptId": "your-script-id-here",
+     "rootDir": "src"
+   }
+   ```
 1. Make note of the location of your `.clasprc.json`, likely in your home directory.
 1. Add Repository level action secrets in Github: `CLASP_CREDENTIALS` and `SCRIPT_ID`, these should be the contents of the `.clasprc.json` and your Script ID respectively.
 
