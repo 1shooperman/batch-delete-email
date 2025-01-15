@@ -31,6 +31,14 @@ Delete gmail email in bulk, via the api, given a series of search strings.
 1. Make note of the location of your `.clasprc.json`, likely in your home directory.
 1. Add Repository level action secrets in Github: `CLASP_CREDENTIALS` and `SCRIPT_ID`, these should be the contents of the `.clasprc.json` and your Script ID respectively.
 
+## Running on a Schedule
+You can always run this manually from the script.google.com web console but where's the fun in that? To automate it:
+- Go to http://script.google.com and open your project
+- From the left menu, look for the :clock: Triggers menu option.
+- On the triggers screen, click "Add Trigger"
+
+Most of the options can be left at the default. Due to execution limits on free gmail accounts, it is recommended that you use a time-driven event source and set it to only run once or twice a day.
+
 # Original Authors
 - [@d1verjim](https://github.com/d1verjim)
 - [@1shooperman](https://github.com/1shooperman)
