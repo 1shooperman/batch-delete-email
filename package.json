@@ -10,7 +10,8 @@
     "login": "clasp login",
     "clone": "clasp clone",
     "pull": "clasp pull",
-    "docs": "jsdoc2md src/Code.js | node scripts/update-readme.js"
+    "docs": "jsdoc2md src/Code.js | node scripts/update-readme.js",
+    "create-trigger": "clasp run createCustomTrigger"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,8 @@
+/**
+ * Retrieves search criteria from a Google Sheet
+ * @returns {string[]} Array of search criteria strings
+ * @throws {Error} If there's an issue accessing the spreadsheet
+ */
 const getSearchCriteria = () => {
   try {
     const spreadsheetId = PropertiesService.getScriptProperties().getProperty("CRITERIA_SPREADSHEET_ID");
@@ -30,6 +35,10 @@ const getSearchCriteria = () => {
   }
 };
 
+/**
+ * Provides default search criteria when spreadsheet access fails
+ * @returns {string[]} Array of default search criteria
+ */
 const getDefaultCriteria = () => {
   // Fallback for development/testing
   return [
@@ -37,10 +46,36 @@ const getDefaultCriteria = () => {
   ];
 }; 
 
+/**
+ * Creates a time-based trigger to run batchDeleteEmail daily
+ * @description Sets up a trigger to run batchDeleteEmail at 2 AM daily.
+ * Removes any existing triggers for batchDeleteEmail before creating a new one.
+ * @throws {Error} If there's an issue creating the trigger
+ */
+const createCustomTrigger = () => {
+  // Delete existing triggers first to avoid duplicates
+  const triggers = ScriptApp.getProjectTriggers();
+  triggers.forEach(trigger => {
+    if (trigger.getHandlerFunction() === "batchDeleteEmail") {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  // Create new daily trigger
+  ScriptApp.newTrigger("batchDeleteEmail")
+    .timeBased()
+    .everyDays(1)
+    .atHour(2)
+    .create();
+  
+  Logger.info("Daily trigger created for batchDeleteEmail");
+};
+
 // Export for testing while maintaining GAS global scope
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { getSearchCriteria };
+  module.exports = { getSearchCriteria, createCustomTrigger };
 } else {
   // In GAS environment, make function global
   this.getSearchCriteria = getSearchCriteria;
+  this.createCustomTrigger = createCustomTrigger;
 } 

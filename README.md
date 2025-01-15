@@ -26,7 +26,7 @@ Delete gmail email in bulk, via the api, given a series of search strings.
 ### Up and running
 1. Fork the repository
 1. Clone locally
-1. `npm i && npm test`
+1. (optional) `npm i && npm test`
 1. `npm run login`
 1. Make note of the location of your `.clasprc.json`, likely in your home directory.
 1. Add Repository level action secrets in Github: `CLASP_CREDENTIALS` and `SCRIPT_ID`, these should be the contents of the `.clasprc.json` and your Script ID respectively.
@@ -38,6 +38,9 @@ You can always run this manually from the script.google.com web console but wher
 - On the triggers screen, click "Add Trigger"
 
 Most of the options can be left at the default. Due to execution limits on free gmail accounts, it is recommended that you use a time-driven event source and set it to only run once or twice a day.
+
+### Helper function to run on a schedule
+There is a helper function that will create the schedule for you. Once you've deployed the script to your gmail account, you can run `npm run create-trigger` locally. Assuming you've set up the proper permissions, your script will now run a 2am local time, every day.
 
 # Original Authors
 - [@d1verjim](https://github.com/d1verjim)

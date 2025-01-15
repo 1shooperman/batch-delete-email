@@ -24,4 +24,10 @@ const { getSearchCriteria } = require('../src/config.js');
 global.getSearchCriteria = getSearchCriteria;
 
 const { batchDeleteEmail } = require('../src/Code.js');
-global.batchDeleteEmail = batchDeleteEmail; 
+global.batchDeleteEmail = batchDeleteEmail;
+
+global.ScriptApp = {
+  getProjectTriggers: jest.fn(),
+  deleteTrigger: jest.fn(),
+  newTrigger: jest.fn()
+}; 
