@@ -46,7 +46,7 @@ You can always run this manually from the script.google.com web console but wher
 
 Most of the options can be left at the default. Due to execution limits on free gmail accounts, it is recommended that you use a time-driven event source and set it to only run once or twice a day.
 
-### Helper function to run on a schedule
+### Helper function to run on a schedule (NOT WORKING)
 There is a helper function that will create the schedule for you. Once you've deployed the script to your gmail account, you can run `npm run create-trigger` locally. Assuming you've set up the proper permissions, your script will now run a 2am local time, every day.
 
 # Original Authors
