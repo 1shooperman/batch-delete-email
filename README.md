@@ -16,7 +16,7 @@ Delete gmail email in bulk, via the api, given a series of search strings.
 1. Name the first tab "SearchCriteria"
 1. Add 3 columns: "Search Criteria", "Description", "Active"
 1. Make note of the Sheet ID, it will be the alphanumeric in the url between `/d/`and `/edit`
-1. Go back to project settings, where you found teh Script ID earlier
+1. Go back to project settings, where you found the Script ID earlier
 1. Create a new script property called `CRITERIA_SPREADSHEET_ID` and give it the value of your Sheet ID
 
 ### (Alternative) Creating a project with the CLI - WIP
