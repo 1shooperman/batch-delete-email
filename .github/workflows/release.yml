@@ -118,6 +118,6 @@ jobs:
           NEW_VERSION="${{ steps.bump_version.outputs.new_version }}"
           gh release create "v$NEW_VERSION" \
             --title "v$NEW_VERSION" \
-            --target 'develop' \
+            --target 'main' \
             --generate-notes \
             --latest
