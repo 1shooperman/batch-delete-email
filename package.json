@@ -25,7 +25,7 @@
   "homepage": "https://github.com/1shooperman/batch-delete-email#readme",
   "devDependencies": {
     "@eslint/js": "^9.18.0",
-    "@google/clasp": "^2.5.0",
+    "@google/clasp": "^3.2.0",
     "eslint": "^9.18.0",
     "eslint-plugin-googleappsscript": "^1.0.5",
     "globals": "^15.14.0",
