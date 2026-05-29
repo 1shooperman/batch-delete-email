@@ -33,6 +33,8 @@
     "jsdoc-to-markdown": "^8.0.0"
   },
   "jest": {
-    "setupFiles": ["<rootDir>/tests/setup.js"]
+    "setupFiles": [
+      "<rootDir>/tests/setup.js"
+    ]
   }
 }

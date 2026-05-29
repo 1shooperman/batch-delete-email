@@ -3,3 +3,6 @@ node_modules
 .clasp.json
 # Ignore local configuration
 src/config.local.js
+
+change-summary.md
+ralph-loop.local.md
