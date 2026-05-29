@@ -1,43 +1,123 @@
-name: Release
+name: Tag and Release
 
 on:
   workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 jobs:
-  release:
+  tag-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+        contents: write
+    outputs:
+      new_version: ${{ steps.bump_version.outputs.new_version }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout repo
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
-
-      - name: Determine next tag
-        id: tag
+          fetch-depth: 0     # get full history & tags
+      
+      - name: Fetch all tags
+        shell: bash
         run: |
-          latest=$(git tag --sort=-v:refname | head -1)
-          if [ -z "$latest" ]; then
-            next="v1.0.0"
+          set -euo pipefail
+          git fetch --tags
+      
+      - name: Get latest tag
+        id: get_tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Filter to only semantic version tags (e.g., v1.2.3 or 1.2.3)
+          LATEST_TAG=$(git tag --sort=-version:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || echo '')
+          if [ -z "$LATEST_TAG" ]; then
+            echo "::warning::No semantic version tags found in repository. Starting from v0.0.0."
+            echo "::warning::This is unusual for a production application. Verify this is intentional."
+            CURRENT_VERSION='0.0.0'
           else
-            major=$(echo "$latest" | sed 's/v//' | cut -d. -f1)
-            minor=$(echo "$latest" | sed 's/v//' | cut -d. -f2)
-            patch=$(echo "$latest" | sed 's/v//' | cut -d. -f3)
-            next="v${major}.${minor}.$((patch + 1))"
+            echo "::notice::Latest tag detected: $LATEST_TAG"
+            # Remove 'v' prefix if present
+            CURRENT_VERSION=$(echo "$LATEST_TAG" | sed 's/^v//')
           fi
-          echo "tag=$next" >> "$GITHUB_OUTPUT"
-
-      - name: Create tag
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "::notice::Current version: $CURRENT_VERSION"
+      
+      - name: Bump version
+        id: bump_version
+        shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "${{ steps.tag.outputs.tag }}"
-          git push origin "${{ steps.tag.outputs.tag }}"
-
-      - name: Create GitHub release
+          set -euo pipefail
+          CURRENT_VERSION="${{ steps.get_tag.outputs.current_version }}"
+          VERSION_TYPE="${{ inputs.version_type }}"
+          
+          # Parse version components
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          
+          # Validate version format
+          if [ -z "$MAJOR" ] || [ -z "$MINOR" ] || [ -z "$PATCH" ] || \
+             ! [[ "$MAJOR" =~ ^[0-9]+$ ]] || ! [[ "$MINOR" =~ ^[0-9]+$ ]] || ! [[ "$PATCH" =~ ^[0-9]+$ ]]; then
+            echo "::error::Invalid version format: $CURRENT_VERSION"
+            exit 1
+          fi
+          
+          # Check for leading zeros (invalid in semantic versioning)
+          if [[ "$MAJOR" =~ ^0[0-9]+ ]] || [[ "$MINOR" =~ ^0[0-9]+ ]] || [[ "$PATCH" =~ ^0[0-9]+ ]]; then
+            echo "::error::Version components should not have leading zeros: $CURRENT_VERSION"
+            exit 1
+          fi
+          
+          # Bump version based on type
+          case "$VERSION_TYPE" in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+          
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "::notice::Bumping version: $CURRENT_VERSION -> $NEW_VERSION ($VERSION_TYPE)"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Check for tag conflicts
+        shell: bash
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ steps.tag.outputs.tag }}" \
+          set -euo pipefail
+          NEW_VERSION="${{ steps.bump_version.outputs.new_version }}"
+          if gh release view "v$NEW_VERSION" &>/dev/null; then
+            echo "::error::Release v$NEW_VERSION already exists. Another deployment may be in progress."
+            exit 1
+          fi
+      
+      - name: Create release (auto-create tag at this commit)
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          NEW_VERSION="${{ steps.bump_version.outputs.new_version }}"
+          gh release create "v$NEW_VERSION" \
+            --title "v$NEW_VERSION" \
+            --target 'develop' \
             --generate-notes \
-            --title "${{ steps.tag.outputs.tag }}"
+            --latest
